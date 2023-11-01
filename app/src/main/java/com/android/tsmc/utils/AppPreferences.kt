@@ -31,4 +31,8 @@ object AppPreferences {
     var userType: String
         get() = preferences.getString("userType", "") ?: ""
         set(value) = preferences.edit().putString("userType", value).apply()
+    // User Token
+    var token: String
+        get() = preferences.getString("userToken", "") ?: ""
+        set(value) = preferences.edit().putString("userToken", value).apply()
 }

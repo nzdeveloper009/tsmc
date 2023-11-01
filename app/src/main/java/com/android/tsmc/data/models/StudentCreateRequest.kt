@@ -1,10 +1,8 @@
 package com.android.tsmc.data.models
 
-data class User(
-    val __v: Int,
-    val _id: String,
+data class StudentCreateRequest(
     var email: String,
-    var password: String?=null,
+    var password: String,
     val role: String,
     var username: String
 )

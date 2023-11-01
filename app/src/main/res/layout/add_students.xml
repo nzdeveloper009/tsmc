@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_margin="15dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="15dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=" Add the user information"
+            android:textStyle="bold"
+            android:textSize="19sp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="8dp"
+            android:elevation="15dp"
+            android:textColor="@color/white"
+            android:background="@color/dark_purple"
+            android:padding="10dp"
+            android:gravity="center" />
+        <EditText
+            android:id="@+id/userName"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:padding="15dp"
+            android:hint="Name"
+            android:inputType="textPersonName"
+            android:background="@drawable/shape_background"
+            android:textSize="18sp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            android:textColor="@color/dark_purple"
+            />
+        <EditText
+            android:id="@+id/userMail"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:padding="15dp"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:background="@drawable/shape_background"
+            android:textSize="18sp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:textStyle="bold"
+            android:textColor="@color/dark_purple"
+            />
+        <EditText
+            android:id="@+id/userPassword"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:padding="15dp"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:background="@drawable/shape_background"
+            android:textSize="18sp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="5dp"
+            android:textStyle="bold"
+            android:textColor="@color/dark_purple"
+            />
+        <EditText
+            android:id="@+id/userNumber"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:padding="15dp"
+            android:hint="Phone No"
+            android:inputType="text"
+            android:background="@drawable/shape_background"
+            android:textSize="18sp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="5dp"
+            android:textStyle="bold"
+            android:textColor="@color/dark_purple"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>
