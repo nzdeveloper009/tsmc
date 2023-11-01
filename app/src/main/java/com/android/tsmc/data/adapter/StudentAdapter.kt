@@ -13,9 +13,12 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.android.tsmc.R
 import com.android.tsmc.data.models.StudentCreateRequest
+import com.android.tsmc.data.models.StudentEditRequest
 import com.android.tsmc.data.models.User
+import com.android.tsmc.utils.AppPreferences
+import com.android.tsmc.viewnodels.UserViewModel
 
-class StudentAdapter(val c: Context, val studentList: ArrayList<User>) :
+class StudentAdapter(val c: Context, val studentList: ArrayList<User>, val userViewMode: UserViewModel) :
     RecyclerView.Adapter<StudentAdapter.userViewHolder>() {
 
 //    lateinit var studentList: ArrayList<StudentCreateRequest>
@@ -47,14 +50,16 @@ class StudentAdapter(val c: Context, val studentList: ArrayList<User>) :
                     R.id.editText -> {
                         val v = LayoutInflater.from(c).inflate(R.layout.add_students, null)
                         val name = v.findViewById<EditText>(R.id.userName)
-                        val UserMail = v.findViewById<EditText>(R.id.userMail)
+                        val UseMail = v.findViewById<EditText>(R.id.userMail)
                         val Userpass = v.findViewById<EditText>(R.id.userPassword)
                         AlertDialog.Builder(c)
                             .setView(v)
                             .setPositiveButton("Ok") { dialog, _ ->
                                 position.username = name.text.toString()
-                                position.email = UserMail.text.toString()
+                                position.email = UseMail.text.toString()
                                 position.password = Userpass.text.toString()
+                                val studentEditRequest = StudentEditRequest(UseMail.text.toString(),position.role,name.text.toString())
+                                userViewMode.editStudentInformation(AppPreferences.token,position._id,studentEditRequest)
                                 notifyDataSetChanged()
                                 Toast.makeText(c, "User Information is Edited", Toast.LENGTH_SHORT)
                                     .show()
@@ -76,6 +81,7 @@ class StudentAdapter(val c: Context, val studentList: ArrayList<User>) :
                             .setMessage("Are you sure delete this Information")
                             .setPositiveButton("Yes") { dialog, _ ->
                                 studentList.removeAt(adapterPosition)
+                                userViewMode.deleteStudentById(AppPreferences.token,position._id)
                                 notifyDataSetChanged()
                                 Toast.makeText(c, "Deleted this Information", Toast.LENGTH_SHORT)
                                     .show()

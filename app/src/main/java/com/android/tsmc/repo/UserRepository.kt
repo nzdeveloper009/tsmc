@@ -5,8 +5,11 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.android.tsmc.data.api.UserApi
+import com.android.tsmc.data.models.EditUserResponse
+import com.android.tsmc.data.models.MessageResponse
 import com.android.tsmc.data.models.StudentCreateRequest
 import com.android.tsmc.data.models.StudentCreateResponse
+import com.android.tsmc.data.models.StudentEditRequest
 import com.android.tsmc.data.models.User
 import com.android.tsmc.data.models.UserLoginRequest
 import com.android.tsmc.data.models.UserLoginResponse
@@ -34,6 +37,18 @@ class UserRepository @Inject constructor(private val userApi: UserApi) {
         get() = _getAllStudentResponseLiveData
 
 
+    private val _deleteUserByIdResponseLiveData =
+        MutableLiveData<NetworkResult<MessageResponse>>()
+    val deleteUserByIdResponseLiveData: LiveData<NetworkResult<MessageResponse>>
+        get() = _deleteUserByIdResponseLiveData
+
+
+    private val _editUserInformationResponseLiveData =
+        MutableLiveData<NetworkResult<EditUserResponse>>()
+    val editUserInformationResponseLiveData: LiveData<NetworkResult<EditUserResponse>>
+        get() = _editUserInformationResponseLiveData
+
+
     suspend fun userLogin(userLoginRequest: UserLoginRequest) {
         _userLoginResponseLiveData.postValue(NetworkResult.Loading())
         val response = userApi.userLogin(userLoginRequest)
@@ -51,6 +66,37 @@ class UserRepository @Inject constructor(private val userApi: UserApi) {
         _getAllStudentResponseLiveData.postValue(NetworkResult.Loading())
         val response = userApi.getAllStudent(token)
         handleGetAllStudentsResponse(response)
+    }
+    suspend fun deleteUserById(token: String, userID: String) {
+        _deleteUserByIdResponseLiveData.postValue(NetworkResult.Loading())
+        val response = userApi.deleteUserById(token,userID)
+        handleDeleteStudentByIdResponse(response)
+    }
+    suspend fun editUserInformation(token: String, userId: String, studentEditRequest: StudentEditRequest) {
+        _editUserInformationResponseLiveData.postValue(NetworkResult.Loading())
+        val response = userApi.editUserInformation(token,userId,studentEditRequest)
+        handleEditUserInformationResponse(response)
+    }
+
+    private fun handleDeleteStudentByIdResponse(response: Response<MessageResponse>) {
+        if (response.isSuccessful && response.body() != null) {
+            _deleteUserByIdResponseLiveData.postValue(NetworkResult.Success(response.body()))
+        } else if (response.errorBody() != null) {
+            val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+            _deleteUserByIdResponseLiveData.postValue(NetworkResult.Error(errorObj.getString("error")))
+        } else {
+            _deleteUserByIdResponseLiveData.postValue(NetworkResult.Error("Something went wrong"))
+        }
+    }
+    private fun handleEditUserInformationResponse(response: Response<EditUserResponse>) {
+        if (response.isSuccessful && response.body() != null) {
+            _editUserInformationResponseLiveData.postValue(NetworkResult.Success(response.body()))
+        } else if (response.errorBody() != null) {
+            val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+            _deleteUserByIdResponseLiveData.postValue(NetworkResult.Error(errorObj.getString("error")))
+        } else {
+            _deleteUserByIdResponseLiveData.postValue(NetworkResult.Error("Something went wrong"))
+        }
     }
 
     private fun handleGetAllStudentsResponse(response: Response<List<User>>) {

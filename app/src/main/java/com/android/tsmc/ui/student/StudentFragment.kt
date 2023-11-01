@@ -16,6 +16,7 @@ import androidx.viewbinding.ViewBinding
 import com.android.tsmc.R
 import com.android.tsmc.data.adapter.StudentAdapter
 import com.android.tsmc.data.models.StudentCreateRequest
+import com.android.tsmc.data.models.StudentEditRequest
 import com.android.tsmc.data.models.User
 import com.android.tsmc.databinding.FragmentStudentBinding
 import com.android.tsmc.ui.base.BaseFragment
@@ -46,7 +47,7 @@ class StudentFragment : BaseFragment() {
         studentList = ArrayList()
 
         /*userAdapter*/
-        studentAdapter = StudentAdapter(requireContext(), studentList)
+        studentAdapter = StudentAdapter(requireContext(), studentList, userViewMode)
         /*set recycler view adapter*/
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = studentAdapter
@@ -135,6 +136,52 @@ class StudentFragment : BaseFragment() {
                 is NetworkResult.Loading -> {
 
                     Toast.makeText(requireContext(), "Getting Students", Toast.LENGTH_LONG)
+                        .show()
+                }
+            }
+        })
+        userViewMode.deleteStudentsByIdResponseLiveData.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is NetworkResult.Success -> {
+                    if (it.data != null) {
+                        Toast.makeText(requireContext(),"Student Remove Successful",Toast.LENGTH_LONG).show()
+                        studentAdapter.notifyDataSetChanged()
+                    }
+
+                }
+
+                is NetworkResult.Error -> {
+
+                    Toast.makeText(requireContext(), "Error!! ${it.message}", Toast.LENGTH_LONG)
+                        .show()
+                }
+
+                is NetworkResult.Loading -> {
+
+                    Toast.makeText(requireContext(), "Removing Students", Toast.LENGTH_LONG)
+                        .show()
+                }
+            }
+        })
+        userViewMode.editStudentsByIdResponseLiveData.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is NetworkResult.Success -> {
+                    if (it.data != null) {
+                        Toast.makeText(requireContext(),"Student Edit Successful",Toast.LENGTH_LONG).show()
+                        studentAdapter.notifyDataSetChanged()
+                    }
+
+                }
+
+                is NetworkResult.Error -> {
+
+                    Toast.makeText(requireContext(), "Error!! ${it.message}", Toast.LENGTH_LONG)
+                        .show()
+                }
+
+                is NetworkResult.Loading -> {
+
+                    Toast.makeText(requireContext(), "Editing Students", Toast.LENGTH_LONG)
                         .show()
                 }
             }
